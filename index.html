@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>מילאנו יום 2 | הלב האלגנטי של מילאנו</title>
+    
+    <!-- PWA Standard Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1b384c">
+    <link rel="apple-touch-icon" href="icon.svg">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-blue: #1b384c;
+            --terracotta: #c86343;
+            --soft-terracotta: #f7ede8;
+            --accent-gold: #d4a373;
+            --bg-color: #faf7f2;
+        }
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Assistant', sans-serif;
+            color: var(--deep-blue);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 80px; 
+            overscroll-behavior-y: none;
+        }
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Sticky Header */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            background-color: var(--deep-blue);
+            color: white;
+            z-index: 50;
+            padding: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            padding-bottom: env(safe-area-inset-bottom, 10px);
+            z-index: 50;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6b7280;
+            font-size: 12px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav-item.active {
+            color: var(--terracotta);
+            font-weight: bold;
+        }
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+            fill: currentColor;
+        }
+        /* Tabs */
+        .tab-content {
+            display: none;
+            padding: 16px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Timeline Items */
+        .timeline-item {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-right: 4px solid var(--accent-gold);
+            transition: all 0.3s;
+        }
+        .timeline-item.completed {
+            opacity: 0.6;
+            border-right-color: #9ca3af;
+        }
+        .delay-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 99px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+        .delay-ok {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .delay-warn {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--terracotta);
+        }
+        /* Modal for Ticket */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #6b7280;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Header -->
+    <header class="sticky-header">
+        <div>
+            <p class="text-xs text-[#d4a373]">יום שלישי · 27 באוקטובר 2026</p>
+            <h1 class="text-xl font-bold">הלב האלגנטי של מילאנו</h1>
+        </div>
+        <div class="text-right">
+            <p class="text-2xl font-bold tracking-wider" id="live-clock">--:--</p>
+        </div>
+    </header>
+
+    <!-- Tab 1: Timeline -->
+    <main id="timeline" class="tab-content active">
+        <div class="mb-4 flex justify-between items-center">
+            <h2 class="text-2xl font-bold">לו"ז יומי</h2>
+            <div id="delay-indicator" class="delay-pill delay-ok">עומדים בזמנים</div>
+        </div>
+
+        <div class="timeline-item" data-start="10:00" data-end="11:45">
+            <div class="flex justify-between items-start mb-2">
+                <span class="inline-block bg-[#1b384c] text-white px-3 py-1 rounded-full text-sm font-bold">10:00 – 11:45</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2">כיכר דואומו, גלריה ויטוריו עמנואלה ופלאצו ריאלה</h3>
+            <p class="text-sm text-gray-600 mb-2">
+                <strong>תחילת היום:</strong> נתחיל בחזית הדואומו מבחוץ וצילום. לאחר מכן הליכה אל האוקטגון המרכזי של גלריה ויטוריו עמנואלה השני, כיפת הזכוכית ופסיפס השור. לבסוף הצצה לחצר הניאו-קלאסית השקטה של פלאצו ריאלה (Palazzo Reale).
+            </p>
+            <div class="bg-[#f7ede8] p-3 rounded-lg text-sm text-[#1b384c] mt-2">
+                <strong>💡 טיפ:</strong> אם יש זמן, כדאי להיכנס לשתות קפה של בוקר בקרבת הגלריה או לתצפת על הכיכר ממרפסת הרינסנטה (Rinascente).
+            </div>
+            <div class="checkbox-container border-t border-gray-100 pt-3 mt-3">
+                <input type="checkbox" id="item1" class="item-checkbox" onchange="saveProgress()">
+                <label for="item1" class="text-sm font-semibold">סומן כהושלם</label>
+            </div>
+        </div>
+
+        <div class="timeline-item border-r-[6px] border-[#c86343] bg-[#fdf8f6]" data-start="11:45" data-end="13:30">
+            <div class="flex justify-between items-start mb-2">
+                <span class="inline-block bg-[#c86343] text-white px-3 py-1 rounded-full text-sm font-bold">11:45 – 13:30</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2">הדואומו והגג (Fast-Track)</h3>
+            <p class="text-sm text-gray-600 mb-2">
+                הגעה ב-11:45 לשער הירוק (Gate 3 Green) לטובת בידוק ביטחוני. 
+                <br>בשעה 12:00 נעלה לגג הקתדרלה במעלית המהירה ונסייר בטרסות ובקתדרלה עצמה.
+            </p>
+            <div class="bg-white p-3 rounded-lg text-sm text-[#991b1b] border border-red-100 mt-2 font-semibold">
+                ⚠️ חובה להגיע בלבוש הולם (כתפיים וברכיים מכוסות). הירידה מהגג נעשית במדרגות. אין להכניס מזוודות גדולות.
+            </div>
+            
+            <div class="mt-4">
+                <button onclick="openModal('ticketModal')" class="bg-[#1b384c] text-white px-4 py-3 rounded-xl font-bold w-full text-center flex items-center justify-center gap-2 shadow-md active:scale-95 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path></svg>
+                    הצג כרטיסי כניסה (לשעה 12:00)
+                </button>
+            </div>
+
+            <div class="checkbox-container border-t border-[#f7ede8] pt-3 mt-4">
+                <input type="checkbox" id="item2" class="item-checkbox" onchange="saveProgress()">
+                <label for="item2" class="text-sm font-semibold">סומן כהושלם</label>
+            </div>
+        </div>
+
+        <div class="timeline-item" data-start="13:30" data-end="16:00">
+            <div class="flex justify-between items-start mb-2">
+                <span class="inline-block bg-[#1b384c] text-white px-3 py-1 rounded-full text-sm font-bold">13:30 – 16:00</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2">ארוחת צהריים, תרבות ורובע בררה</h3>
+            <p class="text-sm text-gray-600 mb-2">
+                הליכה דרך כיכר דלה סקאלה (La Scala) אל סמטאות האבן הקסומות של רובע בררה (Brera). זה הזמן לארוחת צהריים מפנקת באחת המסעדות ברובע, ושיטוט רגלי נעים באזור.
+            </p>
+            <div class="checkbox-container border-t border-gray-100 pt-3 mt-3">
+                <input type="checkbox" id="item3" class="item-checkbox" onchange="saveProgress()">
+                <label for="item3" class="text-sm font-semibold">סומן כהושלם</label>
+            </div>
+        </div>
+    </main>
+
+    <!-- Tab 2: Photos -->
+    <main id="photos" class="tab-content">
+        <h2 class="text-2xl font-bold mb-4">נקודות צילום מומלצות</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                <div class="h-28 bg-gray-200" style="background-image: url('https://images.unsplash.com/photo-1572018442801-447ee568853b?w=500&q=80'); background-size: cover; background-position: center;"></div>
+                <div class="p-3">
+                    <h4 class="font-bold text-sm text-[#1b384c]">חזית הדואומו</h4>
+                    <p class="text-xs text-gray-500 mt-1">באור בוקר, להתרחק מעט לאחור כדי לתפוס את כל החזית הלבנה.</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                <div class="h-28 bg-gray-200" style="background-image: url('https://images.unsplash.com/photo-1540608518978-2d7c5ed24b81?w=500&q=80'); background-size: cover; background-position: center;"></div>
+                <div class="p-3">
+                    <h4 class="font-bold text-sm text-[#1b384c]">כיפת גלריה ויטוריו</h4>
+                    <p class="text-xs text-gray-500 mt-1">לעמוד בדיוק במרכז האוקטגון ולצלם כלפי מעלה.</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                <div class="h-28 bg-gray-200" style="background-image: url('https://images.unsplash.com/photo-1629802094464-9be1a7fa7022?w=500&q=80'); background-size: cover; background-position: center;"></div>
+                <div class="p-3">
+                    <h4 class="font-bold text-sm text-[#1b384c]">טרסות הגג (בדואומו)</h4>
+                    <p class="text-xs text-gray-500 mt-1">צילום פנורמי וקלוז-אפים בין צריחי השיש הלבנים המפורסמים.</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                <div class="h-28 bg-gray-200" style="background-image: url('https://images.unsplash.com/photo-1615822365448-b4b1a4369e54?w=500&q=80'); background-size: cover; background-position: center;"></div>
+                <div class="p-3">
+                    <h4 class="font-bold text-sm text-[#1b384c]">סמטאות בררה</h4>
+                    <p class="text-xs text-gray-500 mt-1">אווירה ציורית ואלגנטית עם חנויות בוטיק ורחובות מרוצפי אבן.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Tab 3: Food & Language -->
+    <main id="food" class="tab-content">
+        <h2 class="text-2xl font-bold mb-4">אוכל ושפה</h2>
+        
+        <div class="bg-white rounded-xl p-4 shadow-sm border-r-4 border-[#c86343] mb-6">
+            <h4 class="font-bold mb-2 text-[#1b384c] text-lg">קולינריה באזור</h4>
+            <ul class="text-sm space-y-3 text-gray-700 list-disc list-inside">
+                <li><strong>קפה איטלקי:</strong> אל תוותרו על קפוצ'ינו של בוקר בבתי הקפה שבאזור הגלריה (רצוי בעמידה על הבר כמו המקומיים).</li>
+                <li><strong>שוקולד וג'לאטו:</strong> Venchi במרכז העיר מספק חוויה מתוקה במיוחד עם קיר שוקולד זורם.</li>
+                <li><strong>ארוחת צהריים:</strong> רובע בררה שופע טרטוריות אלגנטיות, פיצות ופסטות באווירה מקומית ואותנטית.</li>
+            </ul>
+        </div>
+
+        <h2 class="text-xl font-bold mb-3 mt-6">משפטי עזר (איטלקית)</h2>
+        
+        <div class="space-y-3">
+            <div class="bg-white rounded-xl p-4 flex justify-between items-center shadow-sm border border-gray-100">
+                <div>
+                    <p class="text-sm text-gray-500">בוקר טוב</p>
+                    <p class="font-bold text-lg text-[#1b384c]" dir="ltr">Buongiorno</p>
+                </div>
+                <button onclick="speakPhrase('Buongiorno', 'it-IT')" class="bg-[#f7ede8] p-3 rounded-full text-[#c86343] hover:bg-[#c86343] hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M8 10h-.01M12 14a2 2 0 01-2-2V8a2 2 0 012-2h4v8h-4z"></path></svg>
+                </button>
+            </div>
+            
+            <div class="bg-white rounded-xl p-4 flex justify-between items-center shadow-sm border border-gray-100">
+                <div>
+                    <p class="text-sm text-gray-500">תודה רבה</p>
+                    <p class="font-bold text-lg text-[#1b384c]" dir="ltr">Grazie mille</p>
+                </div>
+                <button onclick="speakPhrase('Grazie mille', 'it-IT')" class="bg-[#f7ede8] p-3 rounded-full text-[#c86343] hover:bg-[#c86343] hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M8 10h-.01M12 14a2 2 0 01-2-2V8a2 2 0 012-2h4v8h-4z"></path></svg>
+                </button>
+            </div>
+            
+            <div class="bg-white rounded-xl p-4 flex justify-between items-center shadow-sm border border-gray-100">
+                <div>
+                    <p class="text-sm text-gray-500">שולחן לשניים, בבקשה</p>
+                    <p class="font-bold text-lg text-[#1b384c]" dir="ltr">Un tavolo per due, per favore</p>
+                </div>
+                <button onclick="speakPhrase('Un tavolo per due, per favore', 'it-IT')" class="bg-[#f7ede8] p-3 rounded-full text-[#c86343] hover:bg-[#c86343] hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M8 10h-.01M12 14a2 2 0 01-2-2V8a2 2 0 012-2h4v8h-4z"></path></svg>
+                </button>
+            </div>
+            
+            <div class="bg-white rounded-xl p-4 flex justify-between items-center shadow-sm border border-gray-100">
+                <div>
+                    <p class="text-sm text-gray-500">ללא גלוטן / ללא חזיר</p>
+                    <p class="font-bold text-lg text-[#1b384c]" dir="ltr">Senza glutine / Niente maiale</p>
+                </div>
+                <button onclick="speakPhrase('Senza glutine, niente maiale', 'it-IT')" class="bg-[#f7ede8] p-3 rounded-full text-[#c86343] hover:bg-[#c86343] hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M8 10h-.01M12 14a2 2 0 01-2-2V8a2 2 0 012-2h4v8h-4z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Tab 4: Navigation -->
+    <main id="nav" class="tab-content">
+        <h2 class="text-2xl font-bold mb-4">מידע וניווט</h2>
+        
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-4 border-t-4 border-t-[#d4a373]">
+            <h3 class="font-bold mb-2 flex items-center gap-2 text-[#1b384c]">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                התראות להיום
+            </h3>
+            <p class="text-sm text-gray-600 mb-3">
+                <strong>🌤️ מזג אוויר:</strong> יום בהיר עד מעונן קל, יבש ברובו. 8° בבוקר, עד 17° בצהריים. מומלץ לבוש שכבות (מעיל קל לערב).
+            </p>
+            <p class="text-sm text-gray-600">
+                <strong>⚠️ בטיחות:</strong> לאחרונה היו מחאות באזור. כרגע לא ידוע על הפגנה, אך מומלץ להתרחק מהתקהלויות גדולות וכוחות משטרה באזור מרכז העיר והדואומו.
+            </p>
+        </div>
+
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-6">
+            <h3 class="font-bold mb-2 text-[#1b384c]">תחבורה ציבורית</h3>
+            <p class="text-sm text-gray-600 mb-2">
+                ניתן לשלם ישירות עם כרטיס אשראי או סמארטפון בשיטת Tap & Go בכניסה וביציאה. נסיעה בודדת עולה 2.20 אירו. 
+                מטרו צהוב (M3) או אדום (M1) מגיעים לתחנת Duomo.
+            </p>
+        </div>
+
+        <div class="space-y-3">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=Duomo+di+Milano" target="_blank" class="block bg-[#1b384c] text-white px-4 py-4 rounded-xl font-bold text-center shadow-md">
+                📍 ניווט לדואומו (Google Maps)
+            </a>
+            <a href="https://www.duomomilano.it/en/" target="_blank" class="block bg-white text-[#1b384c] border-2 border-[#1b384c] px-4 py-4 rounded-xl font-bold text-center shadow-sm">
+                🌐 האתר הרשמי של הדואומו
+            </a>
+        </div>
+    </main>
+
+    <!-- Ticket Modal -->
+    <div id="ticketModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('ticketModal')">&times;</button>
+            <h2 class="text-2xl font-bold mb-4 text-[#1b384c] serif">הכרטיסים שלך לדואומו</h2>
+            
+            <div class="bg-[#f7ede8] rounded-xl p-5 mb-4 border border-[#c86343]/30 relative overflow-hidden">
+                <!-- Watermark -->
+                <svg class="absolute -right-4 -bottom-4 w-24 h-24 text-[#c86343] opacity-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 22h4l2-4h12l2 4h4Z"/></svg>
+                
+                <ul class="space-y-3 text-sm relative z-10 text-[#1b384c]">
+                    <li class="flex justify-between border-b border-[#1b384c]/10 pb-1">
+                        <span class="text-gray-500">תאריך הביקור:</span>
+                        <strong dir="ltr">27/10/2026</strong>
+                    </li>
+                    <li class="flex justify-between border-b border-[#1b384c]/10 pb-1">
+                        <span class="text-gray-500">שעת כניסה (לטרסות):</span>
+                        <strong class="text-[#c86343] text-base">12:00</strong>
+                    </li>
+                    <li class="flex justify-between border-b border-[#1b384c]/10 pb-1">
+                        <span class="text-gray-500">סוג כרטיס:</span>
+                        <strong dir="ltr">Fast-Track Lift</strong>
+                    </li>
+                    <li class="flex justify-between border-b border-[#1b384c]/10 pb-1">
+                        <span class="text-gray-500">קוד הזמנה:</span>
+                        <strong dir="ltr">OFD4373891</strong>
+                    </li>
+                    <li class="flex justify-between border-b border-[#1b384c]/10 pb-1">
+                        <span class="text-gray-500">שער כניסה:</span>
+                        <strong dir="ltr">Gate 3 GREEN</strong>
+                    </li>
+                    <li class="flex justify-between pb-1">
+                        <span class="text-gray-500">כמות / מחיר:</span>
+                        <strong dir="ltr">2 Tickets (56.00 €)</strong>
+                    </li>
+                </ul>
+            </div>
+            
+            <p class="text-xs text-gray-500 mb-6 font-semibold leading-relaxed">
+                * יש להתייצב בשער הכניסה בדיוק בשעה המצוינת להתחלת הבידוק הביטחוני. 
+                <br>* הציגו את הברקודים מקובץ ה-PDF (Prenotazione.pdf) שנשלח למייל.
+            </p>
+            
+            <button onclick="closeModal('ticketModal')" class="bg-[#1b384c] text-white px-4 py-3 rounded-xl font-bold w-full shadow-md active:scale-95 transition-transform">
+                הבנתי, סגור
+            </button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="javascript:void(0)" id="nav-timeline" class="nav-item active" onclick="switchTab('timeline')">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            לו"ז יומי
+        </a>
+        <a href="javascript:void(0)" id="nav-photos" class="nav-item" onclick="switchTab('photos')">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            צילום
+        </a>
+        <a href="javascript:void(0)" id="nav-food" class="nav-item" onclick="switchTab('food')">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-7v12h2.5v8H21V2h-5z"/></svg>
+            אוכל ושפה
+        </a>
+        <a href="javascript:void(0)" id="nav-nav" class="nav-item" onclick="switchTab('nav')">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            מידע
+        </a>
+    </nav>
+
+    <!-- Interactive Scripts & PWA Logic -->
+    <script>
+        const TRIP_DAY_ID = 'trip_progress_2026_10_27';
+
+        // LocalStorage Progress Management
+        function saveProgress() {
+            const checks = {};
+            document.querySelectorAll('.item-checkbox').forEach(cb => {
+                checks[cb.id] = cb.checked;
+                if (cb.checked) {
+                    cb.closest('.timeline-item').classList.add('completed');
+                } else {
+                    cb.closest('.timeline-item').classList.remove('completed');
+                }
+            });
+            localStorage.setItem(TRIP_DAY_ID, JSON.stringify(checks));
+            checkDelayStatus();
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem(TRIP_DAY_ID);
+            if (saved) {
+                const checks = JSON.parse(saved);
+                Object.keys(checks).forEach(id => {
+                    const cb = document.getElementById(id);
+                    if (cb) {
+                        cb.checked = checks[id];
+                        if (cb.checked) {
+                            cb.closest('.timeline-item').classList.add('completed');
+                        }
+                    }
+                });
+            }
+        }
+
+        // Delay & Clock Logic
+        function checkDelayStatus() {
+            const now = new Date();
+            const curTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            const indicator = document.getElementById('delay-indicator');
+            let isDelayed = false;
+
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                const end = item.dataset.end;
+                const cb = item.querySelector('.item-checkbox');
+                if (end && curTime > end && cb && !cb.checked) {
+                    isDelayed = true;
+                }
+            });
+
+            if (isDelayed) {
+                indicator.textContent = 'שים לב: ייתכן עיכוב בלו"ז';
+                indicator.className = 'delay-pill delay-warn';
+            } else {
+                indicator.textContent = 'עומדים בזמנים';
+                indicator.className = 'delay-pill delay-ok';
+            }
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const curTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            document.getElementById('live-clock').textContent = curTime;
+            checkDelayStatus();
+        }
+
+        setInterval(updateClock, 60000);
+
+        // Modal Logic
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        // Navigation Tabs Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById('nav-' + tabId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        // Text To Speech
+        function speakPhrase(text, langCode = 'it-IT') {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = langCode;
+                utterance.rate = 0.85; 
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("הקראה קולית אינה נתמכת במכשיר זה.");
+            }
+        }
+
+        // Initialization
+        window.onload = () => {
+            updateClock();
+            loadProgress();
+            checkDelayStatus();
+        };
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW setup failed', err));
+            });
+        }
+    </script>
+</body>
+</html>
