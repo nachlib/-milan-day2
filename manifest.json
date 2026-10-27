@@ -1,10 +1,10 @@
 {
-  "name": "מילאנו יום 2",
-  "short_name": "מילאנו 2",
-  "description": "הלב האלגנטי של מילאנו - דואומו, גלריה ובררה",
+  "name": "מילאנו 2",
+  "short_name": "מילאנו",
+  "description": "יום הטיול השני במילאנו - עיצוב מודרני ונקי",
   "display": "standalone",
-  "background_color": "#ece9e2",
-  "theme_color": "#172033",
+  "background_color": "#f9fafb",
+  "theme_color": "#ffffff",
   "start_url": "./index.html",
   "orientation": "portrait",
   "icons": [

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'milan-day2-offline-v3';
+const CACHE_NAME = 'milan-day2-sharp-v1';
 const ASSETS = [
     './',
     './index.html',
