@@ -3,8 +3,8 @@
   "short_name": "מילאנו 2",
   "description": "הלב האלגנטי של מילאנו - דואומו, גלריה ובררה",
   "display": "standalone",
-  "background_color": "#faf7f2",
-  "theme_color": "#1b384c",
+  "background_color": "#ece9e2",
+  "theme_color": "#172033",
   "start_url": "./index.html",
   "orientation": "portrait",
   "icons": [
